@@ -1,0 +1,821 @@
+/* Orange Theme Overrides */
+
+/* Primary Orange Colors */
+:root {
+    --color-primary: #f97316;
+    /* orange-500 */
+    --color-primary-dark: #ea580c;
+    /* orange-600 */
+    --color-primary-light: #fb923c;
+    /* orange-400 */
+    --color-primary-lighter: #fed7aa;
+    /* orange-200 */
+}
+
+/* Override Flux button primary variant */
+[data-flux-button][data-variant="primary"] {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border-color: #ea580c;
+}
+
+[data-flux-button][data-variant="primary"]:hover {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+}
+
+/* Override badges */
+[data-flux-badge][data-color="blue"] {
+    background-color: #fed7aa;
+    color: #9a3412;
+}
+
+/* Links */
+a.text-blue-600 {
+    color: #f97316 !important;
+}
+
+a.text-blue-600:hover {
+    color: #ea580c !important;
+}
+
+.dark a.text-blue-400 {
+    color: #fb923c !important;
+}
+
+.dark a.text-blue-400:hover {
+    color: #f97316 !important;
+}
+
+/* Gradients */
+.bg-gradient-to-br.from-blue-600.to-purple-600 {
+    background-image: linear-gradient(to bottom right, #f97316, #ea580c) !important;
+}
+
+.bg-gradient-to-r.from-blue-600.to-purple-600 {
+    background-image: linear-gradient(to right, #f97316, #ea580c) !important;
+}
+
+.bg-gradient-to-r.from-blue-500.to-purple-500 {
+    background-image: linear-gradient(to right, #f97316, #ea580c) !important;
+}
+
+/* Text colors */
+.text-blue-600 {
+    color: #f97316 !important;
+}
+
+.text-blue-500 {
+    color: #f97316 !important;
+}
+
+.dark .text-blue-400 {
+    color: #fb923c !important;
+}
+
+/* Background colors */
+.bg-blue-50 {
+    background-color: #ffedd5 !important;
+}
+
+.bg-blue-600 {
+    background-color: #f97316 !important;
+}
+
+.dark .bg-blue-900\/20 {
+    background-color: rgba(249, 115, 22, 0.2) !important;
+}
+
+/* Border colors */
+.border-blue-600 {
+    border-color: #f97316 !important;
+}
+
+/* Chart/Analytics icon color */
+svg.text-blue-600 {
+    color: #f97316 !important;
+}
+
+.dark svg.text-blue-400 {
+    color: #fb923c !important;
+}
+
+/* Status badges - keep semantic colors but adjust primary */
+.bg-blue-500 {
+    background-color: #f97316 !important;
+}
+
+.text-blue-700 {
+    color: #c2410c !important;
+}
+
+.dark .text-blue-300 {
+    color: #fdba74 !important;
+}
+
+/* Hover states */
+.hover\:bg-blue-100:hover {
+    background-color: #ffedd5 !important;
+}
+
+.hover\:text-blue-500:hover {
+    color: #f97316 !important;
+}
+
+.dark .hover\:text-blue-300:hover {
+    color: #fdba74 !important;
+}
+
+/* Focus states */
+.focus\:ring-blue-500:focus {
+    --tw-ring-color: #f97316 !important;
+}
+
+/* Active states */
+.active\:bg-blue-700:active {
+    background-color: #c2410c !important;
+}
+
+/* ========================================
+   FORM ELEMENTS - PURE BLACK TEXT
+   ======================================== */
+
+/* Form Inputs - BLACK TEXT */
+[data-flux-input],
+[data-flux-select],
+[data-flux-textarea],
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+input[type="password"],
+select,
+textarea {
+    color: #000000 !important;
+    /* Pure black */
+    background-color: white !important;
+}
+
+/* Placeholders - Darker gray for visibility */
+[data-flux-input]::placeholder,
+[data-flux-textarea]::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: #4b5563 !important;
+    /* Dark gray */
+    opacity: 1 !important;
+}
+
+/* Form Labels - BLACK TEXT, BOLD */
+[data-flux-label],
+[data-flux-field] label,
+label {
+    color: #000000 !important;
+    /* Pure black */
+    font-weight: 600 !important;
+    /* Bold */
+}
+
+/* Select dropdown options - BLACK */
+option {
+    color: #000000 !important;
+    background-color: white !important;
+}
+
+/* Table text - BLACK */
+table td,
+table th {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Paragraph text - BLACK */
+p {
+    color: #000000 !important;
+}
+
+/* Override any gray text colors to BLACK */
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600 {
+    color: #000000 !important;
+}
+
+/* Input borders */
+input,
+select,
+textarea {
+    border-color: #d1d5db !important;
+    /* gray-300 */
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #f97316 !important;
+    /* orange-500 */
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+}
+
+/* Flux component specific overrides */
+[data-flux-field] input,
+[data-flux-field] select,
+[data-flux-field] textarea {
+    color: #000000 !important;
+}
+
+/* Description text - BLACK */
+[data-flux-description] {
+    color: #000000 !important;
+}
+
+/* Error messages - Keep red */
+[data-flux-error] {
+    color: #dc2626 !important;
+    /* red-600 */
+}
+
+/* Ensure ALL form text is BLACK */
+form,
+form * {
+    color: #000000 !important;
+}
+
+/* Override Flux defaults */
+[data-flux-input],
+[data-flux-select],
+[data-flux-textarea],
+[data-flux-label],
+[data-flux-field] {
+    color: #000000 !important;
+}
+
+/* Specific overrides for common elements */
+span,
+div {
+    color: inherit;
+}
+
+/* Make sure headings stay black */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #000000 !important;
+}
+
+/* =
+=======================================
+   ADDITIONAL TEXT VISIBILITY FIXES
+   ======================================== */
+
+/* Ensure all div text is black */
+div {
+    color: #000000 !important;
+}
+
+/* Ensure all span text is black */
+span {
+    color: #000000 !important;
+}
+
+/* Grid and flex container text */
+.grid div,
+.flex div {
+    color: #000000 !important;
+}
+
+/* Card content text */
+.rounded-xl div,
+.rounded-lg div {
+    color: #000000 !important;
+}
+
+/* Specific overrides for budget/payment request details */
+.font-medium,
+.font-semibold,
+.font-bold {
+    color: #000000 !important;
+}
+
+/* Text in white backgrounds */
+.bg-white div,
+.bg-white span,
+.bg-white p {
+    color: #000000 !important;
+}
+
+/* Override any remaining gray text */
+.text-gray-700,
+.text-gray-800,
+.text-gray-900 {
+    color: #000000 !important;
+}
+
+/* Ensure small text is visible */
+.text-sm,
+.text-xs {
+    color: #000000 !important;
+}
+
+/* Status badges - keep their own colors */
+[class*="bg-orange"] span,
+[class*="bg-red"] span,
+[class*="bg-green"] span {
+    color: inherit !important;
+}
+
+/* But make sure badge text is visible */
+.inline-flex.rounded-full {
+    font-weight: 600 !important;
+}
+
+/* Utilization text */
+.text-xs.text-gray-500,
+.text-xs.text-gray-600 {
+    color: #000000 !important;
+}
+
+/* Financial summary cards */
+.text-2xl,
+.text-3xl,
+.text-xl {
+    color: #000000 !important;
+}
+
+/* Override Tailwind gray utilities */
+[class*="text-gray"] {
+    color: #000000 !important;
+}
+
+/* Make sure all content in cards is black */
+[class*="rounded"]>div {
+    color: #000000 !important;
+}
+
+/* ==
+======================================
+   AUTH/LOGIN PAGE TEXT VISIBILITY
+   ======================================== */
+
+/* Auth page text - white on dark background */
+[data-flux-container] {
+    color: #ffffff !important;
+}
+
+/* Auth header text */
+[data-flux-heading] {
+    color: #ffffff !important;
+}
+
+[data-flux-subheading] {
+    color: #e5e7eb !important;
+    /* light gray */
+}
+
+/* Auth form labels on dark background */
+[data-flux-container] [data-flux-label],
+[data-flux-container] label {
+    color: #ffffff !important;
+}
+
+/* Auth form inputs - keep black text on white input fields */
+[data-flux-container] input,
+[data-flux-container] select,
+[data-flux-container] textarea {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+/* Auth page links */
+[data-flux-container] a {
+    color: #fb923c !important;
+    /* orange-400 */
+}
+
+[data-flux-container] a:hover {
+    color: #f97316 !important;
+    /* orange-500 */
+}
+
+/* "Need access?" text */
+.text-zinc-600,
+.dark\:text-zinc-400 {
+    color: #e5e7eb !important;
+    /* light gray for dark backgrounds */
+}
+
+/* Auth page specific text */
+.text-center.text-sm {
+    color: #e5e7eb !important;
+}
+
+/* Checkbox labels on dark background */
+[data-flux-container] [data-flux-checkbox]+label {
+    color: #ffffff !important;
+}
+
+/* Session status messages */
+.text-center[class*="text-"] {
+    color: #ffffff !important;
+}
+
+/* =
+=======================================
+   AUTH/LOGIN PAGE - WHITE BACKGROUND OVERRIDE
+   ======================================== */
+
+/* Override auth page to WHITE background */
+[data-flux-container] {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Auth page body background - WHITE */
+body:has([data-flux-container]) {
+    background-color: #ffffff !important;
+}
+
+/* Override all auth text to BLACK */
+[data-flux-container] [data-flux-heading],
+[data-flux-container] [data-flux-subheading],
+[data-flux-container] [data-flux-label],
+[data-flux-container] label,
+[data-flux-container] span,
+[data-flux-container] div {
+    color: #000000 !important;
+}
+
+/* Auth links stay ORANGE */
+[data-flux-container] a {
+    color: #f97316 !important;
+    /* orange-500 */
+}
+
+[data-flux-container] a:hover {
+    color: #ea580c !important;
+    /* orange-600 */
+}
+
+/* Override zinc colors to BLACK */
+[data-flux-container] .text-zinc-600,
+[data-flux-container] .dark\:text-zinc-400,
+[data-flux-container] .text-center.text-sm {
+    color: #000000 !important;
+}
+
+/* Auth panel/card - WHITE */
+[data-flux-panel] {
+    background-color: #ffffff !important;
+}
+
+/* Remove any dark backgrounds */
+[data-flux-container] *:not(input):not(button) {
+    background-color: transparent !important;
+}
+
+/* 
+========================================
+   MOBILE RESPONSIVE DESIGN
+   ======================================== */
+
+/* Mobile breakpoint: screens smaller than 768px */
+@media (max-width: 767px) {
+
+    /* Reduce heading sizes on mobile */
+    h1 {
+        font-size: 1.5rem !important;
+        /* 24px */
+        line-height: 2rem !important;
+    }
+
+    h2 {
+        font-size: 1.25rem !important;
+        /* 20px */
+        line-height: 1.75rem !important;
+    }
+
+    h3 {
+        font-size: 1.125rem !important;
+        /* 18px */
+        line-height: 1.5rem !important;
+    }
+
+    /* Adjust padding for mobile */
+    .p-6 {
+        padding: 1rem !important;
+        /* 16px */
+    }
+
+    .px-4 {
+        padding-left: 0.75rem !important;
+        /* 12px */
+        padding-right: 0.75rem !important;
+    }
+
+    /* Make cards stack better on mobile */
+    .grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Adjust stats cards for mobile */
+    .md\:grid-cols-4,
+    .md\:grid-cols-3,
+    .md\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Make tables scrollable on mobile */
+    .overflow-x-auto {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    table {
+        min-width: 600px !important;
+        font-size: 0.875rem !important;
+        /* 14px */
+    }
+
+    /* Adjust button sizes for mobile */
+    button,
+    [data-flux-button] {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Stack form fields on mobile */
+    .md\:grid-cols-2,
+    .md\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* Adjust input sizes for mobile */
+    input,
+    select,
+    textarea {
+        font-size: 1rem !important;
+        /* 16px - prevents zoom on iOS */
+        padding: 0.75rem !important;
+    }
+
+    /* Make modals full screen on mobile */
+    [data-flux-modal] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    /* Adjust sidebar for mobile */
+    [data-flux-sidebar] {
+        width: 100% !important;
+        max-width: 280px !important;
+    }
+
+    /* Better spacing for mobile */
+    .space-y-6>*+* {
+        margin-top: 1.5rem !important;
+    }
+
+    .space-y-4>*+* {
+        margin-top: 1rem !important;
+    }
+
+    /* Adjust card padding on mobile */
+    .rounded-xl {
+        padding: 1rem !important;
+        border-radius: 0.75rem !important;
+    }
+
+    /* Make text more readable on mobile */
+    .text-sm {
+        font-size: 0.875rem !important;
+    }
+
+    .text-xs {
+        font-size: 0.75rem !important;
+    }
+
+    /* Adjust stats numbers for mobile */
+    .text-3xl {
+        font-size: 1.875rem !important;
+        /* 30px */
+    }
+
+    .text-2xl {
+        font-size: 1.5rem !important;
+        /* 24px */
+    }
+
+    /* Better touch targets for mobile */
+    a,
+    button,
+    [role="button"] {
+        min-height: 44px !important;
+        /* iOS recommended touch target */
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+
+    /* Stack action buttons on mobile */
+    .flex.gap-2 {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .flex.gap-2>button,
+    .flex.gap-2>[data-flux-button] {
+        width: 100% !important;
+    }
+
+    /* Adjust budget cards for mobile */
+    .lg\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Better table display on mobile */
+    table th,
+    table td {
+        padding: 0.5rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Hide less important columns on very small screens */
+    @media (max-width: 480px) {
+
+        table th:nth-child(n+5),
+        table td:nth-child(n+5) {
+            display: none !important;
+        }
+    }
+
+    /* Adjust filter buttons for mobile */
+    .mb-4.flex.gap-2 {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+
+    /* Make badges more readable on mobile */
+    .inline-flex.rounded-full {
+        padding: 0.375rem 0.75rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Adjust progress bars for mobile */
+    .h-2,
+    .h-2\.5 {
+        height: 0.5rem !important;
+    }
+
+    /* Better spacing for mobile forms */
+    form .space-y-6>*+* {
+        margin-top: 1.25rem !important;
+    }
+
+    /* Adjust max width for mobile */
+    .max-w-4xl {
+        max-width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Make login page mobile-friendly */
+    .max-w-sm {
+        max-width: 100% !important;
+        padding: 1rem !important;
+    }
+
+    /* Adjust logo size for mobile */
+    .size-9 {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+
+    /* Better line item table for mobile */
+    .overflow-x-auto table {
+        display: block !important;
+        overflow-x: auto !important;
+    }
+
+    /* Stack financial summary cards on mobile */
+    .grid.gap-4.md\:grid-cols-4>div {
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Tablet breakpoint: 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    /* Adjust grid columns for tablet */
+    .md\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .md\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Adjust padding for tablet */
+    .p-6 {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Ensure touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Increase touch targets */
+    button,
+    a,
+    [role="button"] {
+        min-height: 48px !important;
+        min-width: 48px !important;
+    }
+
+    /* Remove hover effects on touch devices */
+    .hover\:bg-orange-50:hover {
+        background-color: transparent !important;
+    }
+
+    /* Add active states for touch */
+    button:active,
+    [data-flux-button]:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.1s !important;
+    }
+}
+
+
+/* ========================================
+   BUTTON TEXT VISIBILITY FIX
+   ======================================== */
+
+/* Ensure button text is WHITE on dark buttons */
+button,
+[data-flux-button] {
+    color: #ffffff !important;
+}
+
+/* Primary buttons - white text on orange */
+[data-flux-button][data-variant="primary"],
+button[variant="primary"] {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+}
+
+/* Outline buttons - black text on white */
+[data-flux-button][data-variant="outline"],
+button[variant="outline"] {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border-color: #d1d5db !important;
+}
+
+/* Ghost buttons - black text */
+[data-flux-button][data-variant="ghost"],
+button[variant="ghost"] {
+    color: #000000 !important;
+    background-color: transparent !important;
+}
+
+/* Danger buttons - white text on red */
+[data-flux-button][data-variant="danger"],
+button[variant="danger"] {
+    color: #ffffff !important;
+    background-color: #dc2626 !important;
+}
+
+/* Dark buttons (like "Create Budget", "View") - white text */
+button.bg-zinc-800,
+button.bg-zinc-900,
+button.bg-gray-800,
+button.bg-gray-900,
+[class*="bg-zinc-8"],
+[class*="bg-zinc-9"],
+[class*="bg-gray-8"],
+[class*="bg-gray-9"] {
+    color: #ffffff !important;
+}
+
+/* Ensure all button text is visible */
+button span,
+[data-flux-button] span {
+    color: inherit !important;
+}
+
+/* Fix for specific dark buttons */
+.bg-zinc-800,
+.bg-zinc-900 {
+    background-color: #27272a !important;
+    /* zinc-800 */
+    color: #ffffff !important;
+}
+
+/* Override any button text that might be black */
+button:not([data-variant="outline"]):not([data-variant="ghost"]) {
+    color: #ffffff !important;
+}
