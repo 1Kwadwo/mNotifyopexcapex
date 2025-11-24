@@ -1,10 +1,15 @@
 services:
-  # Web Service
+  # Web Service with SQLite
   - type: web
     name: mnotify-budgetiq
     env: docker
     plan: starter
     dockerfilePath: ./Dockerfile
+    # Persistent disk for SQLite database
+    disk:
+      name: mnotify-data
+      mountPath: /var/www/html/database
+      sizeGB: 1
     envVars:
       - key: APP_NAME
         value: mNotify BudgetIQ
@@ -21,27 +26,9 @@ services:
       - key: LOG_LEVEL
         value: info
       - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        fromDatabase:
-          name: mnotify-budgetiq-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: mnotify-budgetiq-db
-          property: port
+        value: sqlite
       - key: DB_DATABASE
-        fromDatabase:
-          name: mnotify-budgetiq-db
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: mnotify-budgetiq-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: mnotify-budgetiq-db
-          property: password
+        value: /var/www/html/database/database.sqlite
       - key: SESSION_DRIVER
         value: database
       - key: QUEUE_CONNECTION
@@ -64,10 +51,3 @@ services:
         sync: false
       - key: MAIL_FROM_NAME
         value: mNotify BudgetIQ
-
-  # PostgreSQL Database
-  - type: pserv
-    name: mnotify-budgetiq-db
-    env: docker
-    plan: starter
-    dockerfilePath: ./Dockerfile.postgres
