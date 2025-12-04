@@ -6,9 +6,17 @@
     @endif
     <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold text-gray-900">{{ $budget->name }}</h1>
-        <flux:button href="{{ route('budgets.index') }}" variant="outline">
-            Back to List
-        </flux:button>
+        <div class="flex gap-2">
+            <flux:button onclick="window.print()" variant="outline">
+                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print Budget
+            </flux:button>
+            <flux:button href="{{ route('budgets.index') }}" variant="outline">
+                Back to List
+            </flux:button>
+        </div>
     </div>
     {{-- Status and Actions --}}
     <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -48,6 +56,12 @@
                 </span>
             </div>
             <div>
+                <div class="text-sm text-gray-500">Currency</div>
+                <span class="inline-flex rounded-full px-2 py-1 text-xs font-semibold bg-orange-100 text-orange-700">
+                    {{ $budget->currency ?? 'GHS' }}
+                </span>
+            </div>
+            <div>
                 <div class="text-sm text-gray-500">Period</div>
                 <div class="font-medium text-gray-900">{{ $budget->period_start->format('M d, Y') }} - {{ $budget->period_end->format('M d, Y') }}</div>
             </div>
@@ -78,21 +92,29 @@
         <h2 class="mb-4 text-lg font-semibold text-gray-900">Financial Summary</h2>
         
         <div class="grid gap-4 md:grid-cols-4">
+            @php
+                $symbol = match($budget->currency ?? 'GHS') {
+                    'GHS' => '₵',
+                    'USD' => '$',
+                    'EUR' => '€',
+                    default => '₵'
+                };
+            @endphp
             <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                 <div class="text-sm text-gray-500">Total Budget</div>
-                <div class="text-2xl font-bold text-gray-900">${{ number_format($budget->total_amount, 2) }}</div>
+                <div class="text-2xl font-bold text-gray-900">{{ $symbol }}{{ number_format($budget->total_amount, 2) }}</div>
             </div>
             <div class="rounded-lg border border-orange-200 bg-gradient-to-br from-white to-orange-50 p-4 shadow-sm">
                 <div class="text-sm text-gray-500">Available</div>
-                <div class="text-2xl font-bold text-orange-600">${{ number_format($budget->available_amount, 2) }}</div>
+                <div class="text-2xl font-bold text-orange-600">{{ $symbol }}{{ number_format($budget->available_amount, 2) }}</div>
             </div>
             <div class="rounded-lg border border-orange-200 bg-gradient-to-br from-white to-orange-50 p-4 shadow-sm">
                 <div class="text-sm text-gray-500">Committed</div>
-                <div class="text-2xl font-bold text-orange-600">${{ number_format($budget->committed_amount, 2) }}</div>
+                <div class="text-2xl font-bold text-orange-600">{{ $symbol }}{{ number_format($budget->committed_amount, 2) }}</div>
             </div>
             <div class="rounded-lg border border-orange-200 bg-gradient-to-br from-white to-orange-50 p-4 shadow-sm">
                 <div class="text-sm text-gray-500">Spent</div>
-                <div class="text-2xl font-bold text-orange-600">${{ number_format($budget->spent_amount, 2) }}</div>
+                <div class="text-2xl font-bold text-orange-600">{{ $symbol }}{{ number_format($budget->spent_amount, 2) }}</div>
             </div>
         </div>
         @if($budget->isApproved())
@@ -146,7 +168,7 @@
                     <div>
                         <div class="mb-2 flex justify-between text-sm">
                             <span class="font-medium text-orange-600">Available</span>
-                            <span class="font-bold text-gray-900">${{ number_format($analytics['total_available'], 2) }} ({{ number_format(($analytics['total_available'] / $budget->total_amount) * 100, 1) }}%)</span>
+                            <span class="font-bold text-gray-900">{{ $symbol }}{{ number_format($analytics['total_available'], 2) }} ({{ number_format(($analytics['total_available'] / $budget->total_amount) * 100, 1) }}%)</span>
                         </div>
                         <div class="h-8 w-full overflow-hidden rounded-lg bg-gray-200">
                             <div class="h-full bg-orange-500" style="width: {{ ($analytics['total_available'] / $budget->total_amount) * 100 }}%"></div>
@@ -156,7 +178,7 @@
                     <div>
                         <div class="mb-2 flex justify-between text-sm">
                             <span class="font-medium text-orange-600">Committed</span>
-                            <span class="font-bold text-gray-900">${{ number_format($analytics['total_committed'], 2) }} ({{ number_format(($analytics['total_committed'] / $budget->total_amount) * 100, 1) }}%)</span>
+                            <span class="font-bold text-gray-900">{{ $symbol }}{{ number_format($analytics['total_committed'], 2) }} ({{ number_format(($analytics['total_committed'] / $budget->total_amount) * 100, 1) }}%)</span>
                         </div>
                         <div class="h-8 w-full overflow-hidden rounded-lg bg-gray-200">
                             <div class="h-full bg-orange-500" style="width: {{ ($analytics['total_committed'] / $budget->total_amount) * 100 }}%"></div>
@@ -166,7 +188,7 @@
                     <div>
                         <div class="mb-2 flex justify-between text-sm">
                             <span class="font-medium text-orange-600">Spent</span>
-                            <span class="font-bold text-gray-900">${{ number_format($analytics['total_spent'], 2) }} ({{ number_format(($analytics['total_spent'] / $budget->total_amount) * 100, 1) }}%)</span>
+                            <span class="font-bold text-gray-900">{{ $symbol }}{{ number_format($analytics['total_spent'], 2) }} ({{ number_format(($analytics['total_spent'] / $budget->total_amount) * 100, 1) }}%)</span>
                         </div>
                         <div class="h-8 w-full overflow-hidden rounded-lg bg-gray-200">
                             <div class="h-full bg-orange-500" style="width: {{ ($analytics['total_spent'] / $budget->total_amount) * 100 }}%"></div>
@@ -179,7 +201,7 @@
             <div class="mb-6 grid gap-4 md:grid-cols-3">
                 <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                     <div class="text-sm text-gray-500">Average Request</div>
-                    <div class="text-xl font-bold text-orange-600">${{ number_format($analytics['average_request_amount'], 2) }}</div>
+                    <div class="text-xl font-bold text-orange-600">{{ $symbol }}{{ number_format($analytics['average_request_amount'], 2) }}</div>
                 </div>
                 <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                     <div class="text-sm text-gray-500">Largest Request</div>
@@ -267,6 +289,7 @@
                         <tr class="border-b border-gray-200">
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Title</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Requester</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Amount</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
@@ -281,7 +304,18 @@
                                         {{ $request->title }}
                                     </a>
                                 </td>
-                                <td class="px-4 py-2 text-gray-900">${{ number_format($request->amount, 2) }}</td>
+                                <td class="px-4 py-2 text-gray-900">{{ $request->requester->name }}</td>
+                                <td class="px-4 py-2 text-gray-900">
+                                    @php
+                                        $symbol = match($request->currency ?? 'GHS') {
+                                            'GHS' => '₵',
+                                            'USD' => '$',
+                                            'EUR' => '€',
+                                            default => '₵'
+                                        };
+                                    @endphp
+                                    {{ $symbol }}{{ number_format($request->amount, 2) }}
+                                </td>
                                 <td class="px-4 py-2">
                                     <span class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {{ match($request->status) {
                                         'draft' => 'bg-gray-100 text-gray-700',
@@ -311,7 +345,7 @@
                     <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
                         <div>
                             <div class="font-medium text-gray-900">
-                                {{ ucfirst($transaction->type) }} - ${{ number_format($transaction->amount, 2) }}
+                                {{ ucfirst($transaction->type) }} - {{ $symbol }}{{ number_format($transaction->amount, 2) }}
                             </div>
                             <div class="text-sm text-gray-500">
                                 {{ $transaction->created_at->format('M d, Y H:i') }}
@@ -322,11 +356,63 @@
                         </div>
                         <div class="text-right">
                             <div class="text-sm text-gray-500">Balance After</div>
-                            <div class="font-medium text-orange-600">${{ number_format($transaction->balance_after, 2) }}</div>
+                            <div class="font-medium text-orange-600">{{ $symbol }}{{ number_format($transaction->balance_after, 2) }}</div>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     @endif
+    
+    {{-- Print Styles --}}
+    <style>
+        @media print {
+            nav, .no-print, flux\:button, button, [wire\:click] {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+            .mx-auto {
+                max-width: 100% !important;
+            }
+            .shadow-sm, .shadow {
+                box-shadow: none !important;
+            }
+            .space-y-6 > * {
+                page-break-inside: avoid;
+            }
+            @page {
+                margin: 1cm;
+            }
+            .mx-auto:first-child::before {
+                content: "BUDGET REPORT";
+                display: block;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid #000;
+            }
+            table {
+                page-break-inside: auto;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .text-gray-500, .text-gray-600, .text-gray-700 {
+                color: #000 !important;
+            }
+            .rounded-xl, .rounded-lg {
+                border: 1px solid #000 !important;
+                border-radius: 0 !important;
+                margin-bottom: 15px !important;
+            }
+            .bg-orange-600, .bg-orange-500 {
+                background-color: #333 !important;
+            }
+        }
+    </style>
 </div>

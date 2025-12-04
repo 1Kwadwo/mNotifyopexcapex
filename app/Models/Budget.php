@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Budget extends Model
 {
     protected $fillable = [
-        'name', 'type', 'status', 'period_start', 'period_end',
+        'name', 'type', 'currency', 'status', 'period_start', 'period_end',
         'total_amount', 'available_amount', 'committed_amount', 'spent_amount',
         'threshold_warning', 'threshold_limit', 'breakdown',
         'department_id', 'cost_center_id', 'project_id', 'created_by'
@@ -68,5 +68,15 @@ class Budget extends Model
     public function hasAvailableAmount(float $amount): bool
     {
         return $this->available_amount >= $amount;
+    }
+
+    public function getCurrencySymbol(): string
+    {
+        return match($this->currency ?? 'GHS') {
+            'GHS' => '₵',
+            'USD' => '$',
+            'EUR' => '€',
+            default => '₵'
+        };
     }
 }

@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\PaymentRequest;
 use App\Models\User;
 use App\Models\Budget;
+use App\Notifications\PaymentRequestNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use NumberFormatter;
 
 class PaymentRequestService
@@ -41,10 +43,41 @@ class PaymentRequestService
 
             $this->budgetService->reserveAmount($budget, $request, $user);
             
-            // If Finance Manager submits, skip FM approval and go straight to CEO
-            if ($user->isFinanceManager()) {
+            // Auto-approval logic based on user role
+            if ($user->isCEO()) {
+                // CEO requests are automatically fully approved
+                $status = 'approved_by_ceo';
+                $this->auditService->log($request, 'auto_approved_ceo', $user);
+                
+                // Create approval records for both FM and CEO
+                $request->approvals()->create([
+                    'approver_id' => $user->id,
+                    'role' => 'finance_manager',
+                    'status' => 'approved',
+                    'approved_at' => now(),
+                    'comment' => 'Auto-approved (CEO request)',
+                ]);
+                
+                $request->approvals()->create([
+                    'approver_id' => $user->id,
+                    'role' => 'ceo',
+                    'status' => 'approved',
+                    'approved_at' => now(),
+                    'comment' => 'Auto-approved (CEO request)',
+                ]);
+            } elseif ($user->isFinanceManager()) {
+                // Finance Manager submits, skip FM approval and go to approved_by_fm
                 $status = 'approved_by_fm';
                 $this->auditService->log($request, 'auto_approved_fm', $user);
+                
+                // Create FM approval record (auto-approved)
+                $request->approvals()->create([
+                    'approver_id' => $user->id,
+                    'role' => 'finance_manager',
+                    'status' => 'approved',
+                    'approved_at' => now(),
+                    'comment' => 'Auto-approved (FM request)',
+                ]);
             } else {
                 $status = 'pending';
             }
@@ -55,6 +88,15 @@ class PaymentRequestService
             ]);
 
             $this->auditService->log($request, 'submitted', $user);
+            
+            // Send notifications to Finance Manager and CEO
+            if (!$user->isCEO()) {
+                $notifiableUsers = User::whereHas('roles', function($q) {
+                    $q->whereIn('slug', ['finance_manager', 'ceo']);
+                })->get();
+                
+                Notification::send($notifiableUsers, new PaymentRequestNotification($request, 'submitted'));
+            }
         });
     }
 

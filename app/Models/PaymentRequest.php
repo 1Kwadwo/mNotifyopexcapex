@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class PaymentRequest extends Model
 {
     protected $fillable = [
-        'title', 'description', 'amount', 'amount_in_words', 'status',
+        'title', 'description', 'amount', 'currency', 'amount_in_words', 'status',
         'expense_type', 'purpose', 'prepared_by', 'request_date',
         'vendor_name', 'vendor_details', 'department_id', 'project_id',
         'cost_center_id', 'budget_id', 'requester_id', 'submitted_at'
@@ -90,5 +90,15 @@ class PaymentRequest extends Model
     public function isRejected(): bool
     {
         return $this->status === 'rejected';
+    }
+
+    public function getCurrencySymbol(): string
+    {
+        return match($this->currency ?? 'GHS') {
+            'GHS' => '₵',
+            'USD' => '$',
+            'EUR' => '€',
+            default => '₵'
+        };
     }
 }

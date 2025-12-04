@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
+    Volt::route('settings/notifications', 'settings.notifications')->name('notifications.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
 
     Volt::route('settings/two-factor', 'settings.two-factor')
@@ -42,4 +43,24 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+    
+    // Web Push Notification Routes
+    Route::get('/api/webpush/vapid-public-key', function () {
+        return response(config('webpush.vapid.public_key'));
+    });
+
+    Route::post('/api/webpush/subscribe', function (Illuminate\Http\Request $request) {
+        auth()->user()->updatePushSubscription(
+            $request->input('endpoint'),
+            $request->input('keys.p256dh'),
+            $request->input('keys.auth'),
+            $request->input('contentEncoding')
+        );
+        return response()->json(['success' => true]);
+    });
+
+    Route::post('/api/webpush/unsubscribe', function (Illuminate\Http\Request $request) {
+        auth()->user()->deletePushSubscription($request->input('endpoint'));
+        return response()->json(['success' => true]);
+    });
 });

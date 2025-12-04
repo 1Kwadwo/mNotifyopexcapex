@@ -21,3 +21,11 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Backup and temp files
+*-backup.*
+*-old.*
+*-copy.*
+*-temp.*
+*.bak
+*.tmp

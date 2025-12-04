@@ -12,7 +12,7 @@ class Show extends Component
 
     public function mount(Budget $budget)
     {
-        $this->budget = $budget->load(['creator', 'department', 'project', 'costCenter', 'paymentRequests', 'transactions']);
+        $this->budget = $budget->load(['creator', 'department', 'project', 'costCenter', 'paymentRequests.requester', 'transactions']);
     }
 
     public function approve()

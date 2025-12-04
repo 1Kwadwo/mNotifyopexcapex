@@ -16,7 +16,7 @@ class Show extends Component
     public function mount(PaymentRequest $paymentRequest)
     {
         $this->authorize('view', $paymentRequest);
-        $this->paymentRequest = $paymentRequest->load(['requester', 'budget', 'lineItems', 'approvals.approver', 'comments.user']);
+        $this->paymentRequest = $paymentRequest->load(['requester', 'budget', 'lineItems', 'approvals.approver', 'comments.user', 'attachments']);
     }
 
     public function approve()

@@ -12,12 +12,17 @@
                 <h2 class="text-lg font-semibold text-gray-900">Basic Information</h2>
                 
                 <flux:input wire:model="name" label="Budget Name" placeholder="e.g., Q1 2025 OPEX Budget" required />
-                <div class="grid gap-4 md:grid-cols-2">
+                <div class="grid gap-4 md:grid-cols-3">
                     <flux:select wire:model="type" label="Type" required>
                         <option value="OPEX">OPEX (Operational Expenditure)</option>
                         <option value="CAPEX">CAPEX (Capital Expenditure)</option>
                     </flux:select>
-                    <flux:input wire:model="total_amount" type="number" step="0.01" label="Total Amount ($)" placeholder="100000" required />
+                    <flux:select wire:model.live="currency" label="Currency" required>
+                        <option value="GHS">GHS (₵)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                    </flux:select>
+                    <flux:input wire:model="total_amount" type="number" step="0.01" label="Total Amount" placeholder="100000" required />
                 </div>
             </div>
             {{-- Period --}}
@@ -34,24 +39,50 @@
                 <h2 class="text-lg font-semibold text-gray-900">Assignment (Optional)</h2>
                 
                 <div class="grid gap-4 md:grid-cols-3">
-                    <flux:select wire:model="department_id" label="Department">
-                        <option value="">Select Department</option>
-                        @foreach($departments as $dept)
-                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
-                        @endforeach
-                    </flux:select>
-                    <flux:select wire:model="cost_center_id" label="Cost Center">
-                        <option value="">Select Cost Center</option>
-                        @foreach($costCenters as $cc)
-                            <option value="{{ $cc->id }}">{{ $cc->name }}</option>
-                        @endforeach
-                    </flux:select>
-                    <flux:select wire:model="project_id" label="Project">
-                        <option value="">Select Project</option>
-                        @foreach($projects as $project)
-                            <option value="{{ $project->id }}">{{ $project->name }}</option>
-                        @endforeach
-                    </flux:select>
+                    <div>
+                        <flux:input 
+                            wire:model.live="department_name" 
+                            label="Department" 
+                            placeholder="Type or select department"
+                            list="departments-list"
+                        />
+                        <datalist id="departments-list">
+                            @foreach($departments as $dept)
+                                <option value="{{ $dept->name }}">
+                            @endforeach
+                        </datalist>
+                        <p class="mt-1 text-xs text-gray-500">Type to create new or select existing</p>
+                    </div>
+                    
+                    <div>
+                        <flux:input 
+                            wire:model.live="cost_center_name" 
+                            label="Cost Center" 
+                            placeholder="Type or select cost center"
+                            list="cost-centers-list"
+                        />
+                        <datalist id="cost-centers-list">
+                            @foreach($costCenters as $cc)
+                                <option value="{{ $cc->name }}">
+                            @endforeach
+                        </datalist>
+                        <p class="mt-1 text-xs text-gray-500">Type to create new or select existing</p>
+                    </div>
+                    
+                    <div>
+                        <flux:input 
+                            wire:model.live="project_name" 
+                            label="Project" 
+                            placeholder="Type or select project"
+                            list="projects-list"
+                        />
+                        <datalist id="projects-list">
+                            @foreach($projects as $project)
+                                <option value="{{ $project->name }}">
+                            @endforeach
+                        </datalist>
+                        <p class="mt-1 text-xs text-gray-500">Type to create new or select existing</p>
+                    </div>
                 </div>
             </div>
             {{-- Thresholds --}}

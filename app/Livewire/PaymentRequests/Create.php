@@ -20,26 +20,33 @@ class Create extends Component
     public $title = '';
     public $description = '';
     public $expense_type = 'OPEX';
+    public $currency = 'GHS';
     public $purpose = '';
     public $prepared_by = '';
     public $request_date;
     public $vendor_name = '';
     public $vendor_email = '';
     public $vendor_phone = '';
-    public $vendor_address = '';
-    public $department_id = '';
-    public $project_id = '';
-    public $cost_center_id = '';
+    public $comments = '';
+    public $department_name = '';
+    public $project_name = '';
     public $budget_id = '';
     
     public $lineItems = [];
     public $attachments = [];
+    public $invoiceFiles = [];
 
     public function mount()
     {
         $this->prepared_by = auth()->user()->name;
         $this->request_date = now()->format('Y-m-d');
         $this->addLineItem();
+    }
+
+    public function removeAttachment($index)
+    {
+        unset($this->invoiceFiles[$index]);
+        $this->invoiceFiles = array_values($this->invoiceFiles);
     }
 
     public function addLineItem()
@@ -81,6 +88,7 @@ class Create extends Component
         $this->validate([
             'title' => 'required|string|max:255',
             'expense_type' => 'required|in:OPEX,CAPEX',
+            'currency' => 'required|in:GHS,USD,EUR',
             'purpose' => 'required|string',
             'prepared_by' => 'required|string',
             'request_date' => 'required|date',
@@ -89,15 +97,42 @@ class Create extends Component
             'lineItems.*.description' => 'required|string',
             'lineItems.*.quantity' => 'required|numeric|min:1',
             'lineItems.*.unit_price' => 'required|numeric|min:0',
+            'invoiceFiles.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
         ]);
 
         $amount = $this->calculateTotal();
+        
+        // Handle department - find or create
+        $departmentId = null;
+        if (!empty($this->department_name)) {
+            $department = Department::firstOrCreate(
+                ['name' => trim($this->department_name)],
+                ['code' => strtoupper(substr(trim($this->department_name), 0, 3))]
+            );
+            $departmentId = $department->id;
+        }
+
+        // Handle project - find or create
+        $projectId = null;
+        if (!empty($this->project_name)) {
+            $project = Project::firstOrCreate(
+                ['name' => trim($this->project_name)],
+                [
+                    'code' => strtoupper(substr(trim($this->project_name), 0, 3)) . '-' . date('Y'),
+                    'status' => 'active',
+                    'start_date' => now(),
+                    'end_date' => now()->addYear(),
+                ]
+            );
+            $projectId = $project->id;
+        }
         
         $paymentRequest = PaymentRequest::create([
             'title' => $this->title,
             'description' => $this->description,
             'amount' => $amount,
-            'amount_in_words' => $this->convertAmountToWords($amount),
+            'currency' => $this->currency,
+            'amount_in_words' => $this->convertAmountToWords($amount, $this->currency),
             'status' => 'draft',
             'expense_type' => $this->expense_type,
             'purpose' => $this->purpose,
@@ -107,11 +142,11 @@ class Create extends Component
             'vendor_details' => [
                 'email' => $this->vendor_email,
                 'phone' => $this->vendor_phone,
-                'address' => $this->vendor_address,
+                'comments' => $this->comments,
             ],
-            'department_id' => $this->department_id ?: null,
-            'project_id' => $this->project_id ?: null,
-            'cost_center_id' => $this->cost_center_id ?: null,
+            'department_id' => $departmentId,
+            'project_id' => $projectId,
+            'cost_center_id' => null,
             'budget_id' => $this->budget_id,
             'requester_id' => auth()->id(),
         ]);
@@ -127,6 +162,23 @@ class Create extends Component
             ]);
         }
 
+        // Handle file uploads
+        if (!empty($this->invoiceFiles)) {
+            foreach ($this->invoiceFiles as $file) {
+                $filename = $file->getClientOriginalName();
+                $path = $file->store('payment-requests/' . $paymentRequest->id, 'public');
+                
+                \App\Models\Attachment::create([
+                    'payment_request_id' => $paymentRequest->id,
+                    'filename' => $filename,
+                    'path' => $path,
+                    'mime_type' => $file->getMimeType(),
+                    'size' => $file->getSize(),
+                    'uploaded_by' => auth()->id(),
+                ]);
+            }
+        }
+
         if ($action === 'submit') {
             $service = app(PaymentRequestService::class);
             $service->submitRequest($paymentRequest, auth()->user());
@@ -138,10 +190,16 @@ class Create extends Component
         return redirect()->route('payment-requests.show', $paymentRequest);
     }
 
-    protected function convertAmountToWords($amount)
+    protected function convertAmountToWords($amount, $currency = 'GHS')
     {
         $formatter = new NumberFormatter('en', NumberFormatter::SPELLOUT);
-        return ucfirst($formatter->format($amount)) . ' Dollars';
+        $currencyName = match($currency) {
+            'GHS' => 'Ghana Cedis',
+            'USD' => 'US Dollars',
+            'EUR' => 'Euros',
+            default => 'Ghana Cedis'
+        };
+        return ucfirst($formatter->format($amount)) . ' ' . $currencyName;
     }
 
     public function render()
@@ -151,13 +209,11 @@ class Create extends Component
             ->get();
         $departments = Department::all();
         $projects = Project::where('status', 'active')->get();
-        $costCenters = CostCenter::all();
 
         return view('livewire.payment-requests.create', [
             'budgets' => $budgets,
             'departments' => $departments,
             'projects' => $projects,
-            'costCenters' => $costCenters,
             'totalAmount' => $this->calculateTotal(),
         ])->layout('components.layouts.app', ['title' => 'Create Payment Request']);
     }

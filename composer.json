@@ -1,15 +1,17 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "mnotify/budgetiq",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
+    "description": "Budget management and payment request system",
     "keywords": [
         "laravel",
-        "framework"
+        "budget",
+        "payment-requests"
     ],
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": "^8.2",
+        "laravel-notification-channels/webpush": "^10.3",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",

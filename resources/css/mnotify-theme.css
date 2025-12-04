@@ -67,16 +67,74 @@
     --tw-ring-color: var(--mnotify-orange) !important;
 }
 
-/* Buttons */
+/* ALL BUTTONS - BLACK BACKGROUND WITH WHITE TEXT */
 button[variant="primary"],
-.btn-primary {
-    background-color: var(--mnotify-orange) !important;
-    border-color: var(--mnotify-orange) !important;
+.btn-primary,
+[data-flux-button][variant="primary"],
+flux-button[variant="primary"] {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #FFFFFF !important;
 }
 
 button[variant="primary"]:hover,
-.btn-primary:hover {
-    background-color: var(--mnotify-orange-dark) !important;
+.btn-primary:hover,
+[data-flux-button][variant="primary"]:hover,
+flux-button[variant="primary"]:hover {
+    background-color: #1F2937 !important;
+    color: #FFFFFF !important;
+}
+
+/* Ensure button text is white (except images) */
+button[variant="primary"] *:not(img):not(svg),
+.btn-primary *:not(img):not(svg),
+[data-flux-button][variant="primary"] *:not(img):not(svg),
+flux-button[variant="primary"] *:not(img):not(svg) {
+    color: #FFFFFF !important;
+}
+
+/* Outline buttons - BLACK BACKGROUND WITH WHITE TEXT */
+button[variant="outline"],
+[data-flux-button][variant="outline"],
+flux-button[variant="outline"] {
+    color: #FFFFFF !important;
+    background-color: #000000 !important;
+    border: 2px solid #000000 !important;
+}
+
+button[variant="outline"] *:not(img):not(svg),
+[data-flux-button][variant="outline"] *:not(img):not(svg),
+flux-button[variant="outline"] *:not(img):not(svg) {
+    color: #FFFFFF !important;
+}
+
+button[variant="outline"]:hover,
+[data-flux-button][variant="outline"]:hover,
+flux-button[variant="outline"]:hover {
+    background-color: #1F2937 !important;
+    border-color: #1F2937 !important;
+    color: #FFFFFF !important;
+}
+
+/* Ghost buttons - BLACK BACKGROUND WITH WHITE TEXT */
+button[variant="ghost"],
+[data-flux-button][variant="ghost"],
+flux-button[variant="ghost"] {
+    color: #FFFFFF !important;
+    background-color: #000000 !important;
+}
+
+button[variant="ghost"] *:not(img):not(svg),
+[data-flux-button][variant="ghost"] *:not(img):not(svg),
+flux-button[variant="ghost"] *:not(img):not(svg) {
+    color: #FFFFFF !important;
+}
+
+button[variant="ghost"]:hover,
+[data-flux-button][variant="ghost"]:hover,
+flux-button[variant="ghost"]:hover {
+    background-color: #1F2937 !important;
+    color: #FFFFFF !important;
 }
 
 /* Links */
@@ -153,4 +211,57 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--mnotify-orange-dark);
+}
+
+/* ==
+======================================
+   IMAGE PROTECTION - CRITICAL
+   ======================================== */
+
+/* Ensure images are never affected by button/text styles */
+img,
+img.rounded-full,
+img.object-cover,
+.profile-picture-link img,
+a img {
+    background: none !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    filter: none !important;
+}
+
+/* Ensure profile pictures display correctly */
+.profile-picture-link img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+/* Ensure profile picture container is circular and constrained */
+.profile-picture-link {
+    width: 3rem !important;
+    height: 3rem !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+}
+
+.profile-picture-link>div {
+    width: 3rem !important;
+    height: 3rem !important;
+    border-radius: 9999px !important;
+    overflow: hidden !important;
+}
+
+/* Ensure profile picture links don't apply button styles */
+a.profile-picture-link,
+a.profile-picture-link:hover {
+    background: none !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+a.profile-picture-link * {
+    background: inherit !important;
 }

@@ -12,15 +12,16 @@ class Create extends Component
 {
     public $name = '';
     public $type = 'OPEX';
+    public $currency = 'GHS';
     public $period_start;
     public $period_end;
     public $total_amount = '';
     public $threshold_warning = 80;
     public $threshold_limit = 100;
     public $breakdown = '';
-    public $department_id = '';
-    public $cost_center_id = '';
-    public $project_id = '';
+    public $department_name = '';
+    public $cost_center_name = '';
+    public $project_name = '';
 
     public function mount()
     {
@@ -43,6 +44,7 @@ class Create extends Component
         $this->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:OPEX,CAPEX',
+            'currency' => 'required|in:GHS,USD,EUR',
             'period_start' => 'required|date',
             'period_end' => 'required|date|after:period_start',
             'total_amount' => 'required|numeric|min:0',
@@ -52,9 +54,48 @@ class Create extends Component
 
         $status = $action === 'submit' ? 'pending_ceo_approval' : 'draft';
 
+        // Handle department - find or create
+        $departmentId = null;
+        if (!empty($this->department_name)) {
+            $department = Department::firstOrCreate(
+                ['name' => trim($this->department_name)],
+                ['code' => strtoupper(substr(trim($this->department_name), 0, 3))]
+            );
+            $departmentId = $department->id;
+        }
+
+        // Handle cost center - find or create
+        $costCenterId = null;
+        if (!empty($this->cost_center_name)) {
+            $costCenter = CostCenter::firstOrCreate(
+                ['name' => trim($this->cost_center_name)],
+                [
+                    'code' => strtoupper(substr(trim($this->cost_center_name), 0, 3)),
+                    'department_id' => $departmentId
+                ]
+            );
+            $costCenterId = $costCenter->id;
+        }
+
+        // Handle project - find or create
+        $projectId = null;
+        if (!empty($this->project_name)) {
+            $project = Project::firstOrCreate(
+                ['name' => trim($this->project_name)],
+                [
+                    'code' => strtoupper(substr(trim($this->project_name), 0, 3)) . '-' . date('Y'),
+                    'status' => 'active',
+                    'start_date' => now(),
+                    'end_date' => now()->addYear(),
+                ]
+            );
+            $projectId = $project->id;
+        }
+
         $budget = Budget::create([
             'name' => $this->name,
             'type' => $this->type,
+            'currency' => $this->currency,
             'status' => $status,
             'period_start' => $this->period_start,
             'period_end' => $this->period_end,
@@ -65,9 +106,9 @@ class Create extends Component
             'threshold_warning' => $this->threshold_warning,
             'threshold_limit' => $this->threshold_limit,
             'breakdown' => $this->breakdown,
-            'department_id' => $this->department_id ?: null,
-            'cost_center_id' => $this->cost_center_id ?: null,
-            'project_id' => $this->project_id ?: null,
+            'department_id' => $departmentId,
+            'cost_center_id' => $costCenterId,
+            'project_id' => $projectId,
             'created_by' => auth()->id(),
         ]);
 

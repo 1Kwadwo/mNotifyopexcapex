@@ -127,6 +127,7 @@ select:focus[data-flux-control] {
     /* Ensure text is visible in light mode */
     [data-flux-sidebar] {
         color: #374151 !important;
+        background: linear-gradient(to right, #FFF5E6 0%, #FFF9F0 30%, #FFFCF7 60%, #FFFFFF 100%) !important;
     }
 
     [data-flux-navlist-item] {
@@ -167,4 +168,157 @@ select:focus[data-flux-control] {
         background-color: #F9FAFB !important;
         color: #FF6B35 !important;
     }
+
+    /* ALL BUTTONS - BLACK BACKGROUND WITH WHITE TEXT */
+    flux-button[variant="primary"],
+    [data-flux-button][variant="primary"],
+    button[variant="primary"],
+    a[data-flux-button][variant="primary"] {
+        background: #000000 !important;
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border-color: #000000 !important;
+    }
+
+    flux-button[variant="primary"] *,
+    [data-flux-button][variant="primary"] *,
+    button[variant="primary"] *,
+    a[data-flux-button][variant="primary"] * {
+        color: #ffffff !important;
+    }
+
+    flux-button[variant="primary"]:hover,
+    [data-flux-button][variant="primary"]:hover,
+    button[variant="primary"]:hover {
+        background: #1f2937 !important;
+        background-color: #1f2937 !important;
+    }
+
+    /* OUTLINE BUTTONS - BLACK BACKGROUND WITH WHITE TEXT */
+    flux-button[variant="outline"],
+    [data-flux-button][variant="outline"],
+    button[variant="outline"],
+    a[data-flux-button][variant="outline"] {
+        color: #ffffff !important;
+        background-color: #000000 !important;
+        border: 2px solid #000000 !important;
+    }
+
+    flux-button[variant="outline"] *,
+    [data-flux-button][variant="outline"] *,
+    button[variant="outline"] *,
+    a[data-flux-button][variant="outline"] * {
+        color: #ffffff !important;
+    }
+
+    flux-button[variant="outline"]:hover,
+    [data-flux-button][variant="outline"]:hover,
+    button[variant="outline"]:hover {
+        background-color: #1f2937 !important;
+        border-color: #1f2937 !important;
+        color: #ffffff !important;
+    }
+
+    /* GHOST BUTTONS - BLACK BACKGROUND WITH WHITE TEXT */
+    flux-button[variant="ghost"],
+    [data-flux-button][variant="ghost"],
+    button[variant="ghost"] {
+        color: #ffffff !important;
+        background-color: #000000 !important;
+    }
+
+    flux-button[variant="ghost"] *,
+    [data-flux-button][variant="ghost"] *,
+    button[variant="ghost"] * {
+        color: #ffffff !important;
+    }
+
+    flux-button[variant="ghost"]:hover,
+    [data-flux-button][variant="ghost"]:hover,
+    button[variant="ghost"]:hover {
+        background-color: #1f2937 !important;
+        color: #ffffff !important;
+    }
+}
+
+/* ============================================
+   FINAL OVERRIDE - BLACK BUTTONS - ABSOLUTE LAST
+   ============================================ */
+flux-button,
+[data-flux-button],
+button,
+a[data-flux-button],
+flux-button[variant],
+[data-flux-button][variant],
+button[variant],
+flux-button[data-variant],
+[data-flux-button][data-variant],
+flux-button[variant="primary"],
+[data-flux-button][variant="primary"],
+button[variant="primary"],
+flux-button[variant="outline"],
+[data-flux-button][variant="outline"],
+button[variant="outline"],
+flux-button[variant="ghost"],
+[data-flux-button][variant="ghost"],
+button[variant="ghost"] {
+    background-color: #000000 !important;
+    background-image: none !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+}
+
+/* EXCEPTION: Profile picture links should NOT be styled as buttons */
+a.profile-picture-link,
+a.profile-picture-link:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: inherit !important;
+    border-color: transparent !important;
+}
+
+flux-button *:not(img),
+[data-flux-button] *:not(img),
+button *:not(img),
+a[data-flux-button] *:not(img),
+flux-button[variant] *:not(img),
+[data-flux-button][variant] *:not(img),
+button[variant] *:not(img),
+flux-button[data-variant] *:not(img),
+[data-flux-button][data-variant] *:not(img) {
+    color: #ffffff !important;
+}
+
+/* Ensure images and their containers are never affected by button styles */
+img {
+    background: transparent !important;
+    background-color: transparent !important;
+    filter: none !important;
+}
+
+/* Exclude profile picture links from button styles */
+a:has(img) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+a:has(img):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+flux-button:hover,
+[data-flux-button]:hover,
+button:hover,
+a[data-flux-button]:hover,
+flux-button[variant]:hover,
+[data-flux-button][variant]:hover,
+button[variant]:hover {
+    background-color: #1f2937 !important;
+    background-image: none !important;
+    background: #1f2937 !important;
 }
